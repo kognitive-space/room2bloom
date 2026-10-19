@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Room2Bloom Community Development Center | 24/7 Infant &amp; Toddler Care in Montgomery, AL</title>
+  <meta name="description" content="Room2Bloom Community Development Center — Care24/7 infant and toddler daycare, Head Start, Pre-K, after school, tutoring and community outreach in Montgomery, Alabama. Empowering Families, Transforming Communities." />
+  <link rel="icon" type="image/png" href="assets/room2bloom-logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bloom: {
+              blue: '#3D5FA6',
+              'blue-deep': '#2C4885',
+              'blue-ink': '#1C2D57',
+              'blue-mist': '#E8EDF7',
+              green: '#58BD4E',
+              'green-deep': '#2F7D28',
+              'green-light': '#A6E39E',
+              'green-mist': '#EAF6E7',
+              gray: '#C6C5C0',
+              cream: '#F7F6F2',
+              charcoal: '#252326',
+            },
+          },
+          fontFamily: {
+            display: ['Outfit', 'Arial', 'sans-serif'],
+            body: ['"Nunito Sans"', 'Arial', 'sans-serif'],
+            hand: ['Caveat', 'cursive'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --spring: cubic-bezier(.34, 1.56, .64, 1);
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      /* Spacing tokens: 8 / 16 / 24 / 40 / 64 / 104 */
+      --s-section: clamp(4rem, 9vw, 6.5rem);
+      --shadow-elevated:
+        0 1px 2px rgba(28, 45, 87, .06),
+        0 8px 24px -8px rgba(61, 95, 166, .18),
+        0 24px 48px -16px rgba(37, 35, 38, .12);
+      --shadow-floating:
+        0 2px 4px rgba(28, 45, 87, .08),
+        0 16px 40px -10px rgba(61, 95, 166, .30),
+        0 40px 80px -24px rgba(28, 45, 87, .28);
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+    body {
+      font-family: 'Nunito Sans', Arial, sans-serif;
+      line-height: 1.7;
+      color: #252326;
+      background: #F7F6F2;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, .font-display { font-family: 'Outfit', Arial, sans-serif; }
+    .tight { letter-spacing: -0.03em; line-height: 1.02; }
+    .eyebrow {
+      font-family: 'Outfit', Arial, sans-serif;
+      font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    }
+
+    .section { padding-block: var(--s-section); }
+    .shadow-elevated { box-shadow: var(--shadow-elevated); }
+    .shadow-floating { box-shadow: var(--shadow-floating); }
+
+    /* Leaf shape echoing the petal in the logo's "2" */
+    .leaf { border-radius: 58% 9% 58% 9%; }
+    .leaf-alt { border-radius: 9% 58% 9% 58%; }
+
+    /* Grain */
+    .grain::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: .07; mix-blend-mode: multiply;
+    }
+    .grain-light::before { mix-blend-mode: soft-light; opacity: .22; }
+    .grain > * { position: relative; z-index: 1; }
+
+    .mesh-hero {
+      background:
+        radial-gradient(60% 55% at 88% 18%, rgba(88, 189, 78, .16), transparent 70%),
+        radial-gradient(50% 60% at 70% 85%, rgba(61, 95, 166, .14), transparent 70%),
+        radial-gradient(45% 45% at 8% 10%, rgba(198, 197, 192, .35), transparent 70%),
+        #F7F6F2;
+    }
+    .mesh-blue {
+      background:
+        radial-gradient(55% 60% at 100% 0%, rgba(88, 189, 78, .22), transparent 65%),
+        radial-gradient(60% 70% at 0% 100%, rgba(28, 45, 87, .9), transparent 70%),
+        radial-gradient(40% 40% at 30% 20%, rgba(255, 255, 255, .08), transparent 70%),
+        #3D5FA6;
+    }
+    .mesh-green {
+      background:
+        radial-gradient(50% 60% at 0% 0%, rgba(255, 255, 255, .22), transparent 70%),
+        radial-gradient(60% 60% at 100% 100%, rgba(47, 125, 40, .55), transparent 70%),
+        #58BD4E;
+    }
+
+    /* Buttons & interactive states: transform/opacity only */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      font-family: 'Outfit', Arial, sans-serif; font-weight: 700; letter-spacing: -.005em;
+      border-radius: 999px; padding: .95rem 1.6rem; line-height: 1;
+      transition: transform .45s var(--spring);
+      will-change: transform;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0) scale(.97); transition-duration: .12s; }
+    .btn:focus-visible, .link:focus-visible, .card-link:focus-visible, .nav-link:focus-visible, .icon-btn:focus-visible {
+      outline: 3px solid #58BD4E; outline-offset: 3px;
+    }
+    .btn-primary { background: #3D5FA6; color: #fff; box-shadow: 0 1px 2px rgba(28,45,87,.2), 0 10px 24px -8px rgba(61,95,166,.6); }
+    .btn-primary:hover { background: #2C4885; }
+    .btn-primary:active { background: #1C2D57; }
+    .btn-green { background: #58BD4E; color: #10260d; box-shadow: 0 1px 2px rgba(47,125,40,.25), 0 10px 24px -8px rgba(47,125,40,.55); }
+    .btn-green:hover { background: #6BC862; }
+    .btn-green:active { background: #4BAA41; }
+    .btn-ghost { background: #fff; color: #1C2D57; box-shadow: inset 0 0 0 1.5px rgba(61,95,166,.25), 0 6px 16px -8px rgba(28,45,87,.25); }
+    .btn-ghost:hover { background: #E8EDF7; }
+    .btn-ghost:active { background: #dbe3f3; }
+    .btn-white { background: #fff; color: #1C2D57; box-shadow: 0 10px 28px -10px rgba(0,0,0,.45); }
+    .btn-white:hover { background: #F7F6F2; }
+    .btn-white:active { background: #EAF6E7; }
+    .btn-outline-light { color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.55); }
+    .btn-outline-light:hover { background: rgba(255,255,255,.12); }
+    .btn-outline-light:active { background: rgba(255,255,255,.2); }
+
+    .btn .arrow { transition: transform .45s var(--spring); }
+    .btn:hover .arrow { transform: translateX(4px); }
+
+    .nav-link { position: relative; border-radius: 6px; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; border-radius: 2px;
+      background: #58BD4E; transform: scaleX(0); transform-origin: left; transition: transform .45s var(--spring);
+    }
+    .nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); }
+    .nav-link:hover { color: #3D5FA6; }
+    .nav-link:active { color: #1C2D57; }
+
+    .link { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; text-decoration-color: rgba(88,189,78,.8); border-radius: 4px; }
+    .link:hover { color: #2C4885; text-decoration-color: #3D5FA6; }
+    .link:active { color: #1C2D57; }
+
+    .card-lift { transition: transform .55s var(--spring); }
+    .card-lift:hover { transform: translateY(-6px); }
+    .card-lift:active { transform: translateY(-2px) scale(.99); transition-duration: .15s; }
+
+    .icon-btn { transition: transform .4s var(--spring); }
+    .icon-btn:hover { transform: scale(1.06); }
+    .icon-btn:active { transform: scale(.94); }
+
+    /* Image treatment */
+    .img-frame { position: relative; overflow: hidden; isolation: isolate; }
+    .img-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease-out); }
+    .img-frame:hover img { transform: scale(1.04); }
+    .img-frame .tint { position: absolute; inset: 0; background: #3D5FA6; mix-blend-mode: multiply; opacity: .22; pointer-events: none; }
+    .img-frame .shade { position: absolute; inset: 0; pointer-events: none; }
+
+    /* 24h dial */
+    .orbit { animation: orbit 48s linear infinite; transform-origin: 50% 50%; }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+    .counter-orbit { animation: orbit 48s linear infinite reverse; transform-box: fill-box; transform-origin: center; }
+
+    .pulse-dot { animation: pulse 2.4s var(--ease-out) infinite; }
+    @keyframes pulse { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(2.6); opacity: 0; } }
+
+    .float-a { animation: floatA 7s ease-in-out infinite; }
+    .float-b { animation: floatA 8s ease-in-out -3s infinite; }
+    @keyframes floatA { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    /* Marquee */
+    .marquee-track { animation: marquee 40s linear infinite; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease-out), transform 1s var(--spring); transition-delay: var(--d, 0s); }
+    .reveal.from-left { transform: translateX(-36px); }
+    .reveal.from-right { transform: translateX(36px); }
+    .reveal.scale-in { transform: scale(.94); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* Hero load choreography */
+    .load { opacity: 0; transform: translateY(22px); animation: loadIn 1s var(--spring) forwards; animation-delay: var(--d, 0s); }
+    @keyframes loadIn { to { opacity: 1; transform: none; } }
+
+    /* Quotes */
+    .quote { transition: opacity .8s var(--ease-out), transform .9s var(--ease-out); }
+    .quote[aria-hidden="true"] { opacity: 0; transform: translateY(12px); pointer-events: none; }
+
+    /* Mobile menu */
+    #mobileMenu { transition: opacity .35s var(--ease-out), transform .5s var(--spring); }
+    #mobileMenu[data-open="false"] { opacity: 0; transform: translateY(-12px); pointer-events: none; }
+
+    .scribble path { stroke-dasharray: 400; stroke-dashoffset: 400; animation: draw 1.4s var(--ease-out) .9s forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+      .reveal, .load { opacity: 1; transform: none; }
+      .marquee-track { animation: none; }
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden">
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] btn btn-primary">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header id="siteHeader" class="sticky top-0 z-50 bg-bloom-cream/85 backdrop-blur-md border-b border-transparent">
+    <nav class="mx-auto max-w-7xl px-5 sm:px-8 h-20 flex items-center justify-between gap-6" aria-label="Primary">
+      <a href="#top" class="card-link shrink-0 rounded-lg" aria-label="Room2Bloom Community Development Center — home">
+        <img src="assets/room2bloom-logo.png" alt="Room2Bloom Community Development Center" class="h-12 sm:h-14 w-auto" width="1071" height="446" />
+      </a>
+
+      <ul class="hidden lg:flex items-center gap-8 font-display font-semibold text-[15px] text-bloom-charcoal/80">
+        <li><a class="nav-link" href="#care">Care24/7</a></li>
+        <li><a class="nav-link" href="#programs">Programs</a></li>
+        <li><a class="nav-link" href="#vision">Our Vision</a></li>
+        <li><a class="nav-link" href="#outreach">Community</a></li>
+        <li><a class="nav-link" href="#careers">Careers</a></li>
+        <li><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="flex items-center gap-3">
+        <a href="tel:+13053101419" class="hidden md:inline-flex btn btn-ghost !px-4 !py-3 text-sm" aria-label="Call Room2Bloom at (305) 310-1419">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          (305) 310-1419
+        </a>
+        <a href="#contact" data-link="enroll" class="btn btn-primary !px-5 !py-3 text-sm">Enroll Now</a>
+        <button id="menuBtn" class="icon-btn lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full bg-white shadow-elevated text-bloom-blue-ink" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+        </button>
+      </div>
+    </nav>
+
+    <div id="mobileMenu" data-open="false" class="lg:hidden absolute inset-x-4 top-[88px] rounded-3xl bg-white shadow-floating p-6">
+      <ul class="grid gap-1 font-display font-semibold text-lg text-bloom-charcoal">
+        <li><a class="nav-link block py-2" href="#care">Care24/7</a></li>
+        <li><a class="nav-link block py-2" href="#programs">Programs</a></li>
+        <li><a class="nav-link block py-2" href="#vision">Our Vision</a></li>
+        <li><a class="nav-link block py-2" href="#outreach">Community</a></li>
+        <li><a class="nav-link block py-2" href="#careers">Careers</a></li>
+        <li><a class="nav-link block py-2" href="#contact">Contact</a></li>
+      </ul>
+      <a href="tel:+13053101419" class="btn btn-ghost w-full mt-4">Call (305) 310-1419</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section id="top" class="relative grain mesh-hero overflow-hidden">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8 pt-10 pb-20 sm:pt-16 lg:pt-20 lg:pb-28 grid lg:grid-cols-12 gap-14 lg:gap-8 items-center">
+        <div class="lg:col-span-6">
+          <p class="load inline-flex items-center gap-3 rounded-full bg-white/90 shadow-elevated pl-3 pr-4 py-2 text-sm font-semibold text-bloom-blue-ink" style="--d:.05s">
+            <span class="relative flex w-2.5 h-2.5">
+              <span class="pulse-dot absolute inset-0 rounded-full bg-bloom-green"></span>
+              <span class="relative w-2.5 h-2.5 rounded-full bg-bloom-green"></span>
+            </span>
+            Infant Nursery now enrolling &middot; ages 8 weeks+
+          </p>
+
+          <h1 class="load tight font-extrabold text-bloom-charcoal mt-6 text-[2.9rem] sm:text-6xl xl:text-[5.1rem]" style="--d:.15s">
+            Strong starts,<br />
+            <span class="relative inline-block text-bloom-blue">bright futures.
+              <svg class="scribble absolute -bottom-3 left-0 w-full h-4" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true"><path d="M3 11c50-7 120-9 180-5 40 3 80 4 114-2" fill="none" stroke="#58BD4E" stroke-width="5" stroke-linecap="round"/></svg>
+            </span>
+          </h1>
+
+          <p class="load mt-8 max-w-xl text-lg sm:text-xl text-bloom-charcoal/75" style="--d:.28s">
+            Need child care? Ask us about <strong class="text-bloom-blue-ink">Care24/7</strong>, our 24-hour, 7-day-a-week infant and toddler program. We give families in Montgomery a safe, nurturing home away from home.
+          </p>
+
+          <div class="load mt-9 flex flex-wrap gap-3" style="--d:.4s">
+            <a href="#contact" data-link="enroll" class="btn btn-primary text-base">
+              Enroll Your Child
+              <svg class="arrow w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="tel:+13053101419" class="btn btn-ghost text-base">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call Us
+            </a>
+          </div>
+
+          <ul class="load mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold text-bloom-charcoal/80" style="--d:.52s">
+            <li class="flex items-center gap-2"><span class="grid place-items-center w-7 h-7 rounded-full bg-bloom-green-mist text-bloom-green-deep"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Open 24 hours, 7 days</li>
+            <li class="flex items-center gap-2"><span class="grid place-items-center w-7 h-7 rounded-full bg-bloom-green-mist text-bloom-green-deep"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Meals &amp; snacks provided</li>
+            <li class="flex items-center gap-2"><span class="grid place-items-center w-7 h-7 rounded-full bg-bloom-green-mist text-bloom-green-deep"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>Free Pre-K (VPK)</li>
+          </ul>
+        </div>
+
+        <!-- Hero visual: leaf image within a 24-hour dial -->
+        <div class="lg:col-span-6 relative load" style="--d:.25s">
+          <div class="relative mx-auto w-full max-w-[560px] aspect-square">
+            <svg id="dial" class="absolute inset-0 w-full h-full" viewBox="0 0 560 560" aria-hidden="true">
+              <circle cx="280" cy="280" r="268" fill="none" stroke="#C6C5C0" stroke-width="1.5" stroke-dasharray="2 8" />
+              <g id="ticks"></g>
+              <g font-family="Outfit, Arial" font-weight="700" font-size="13" fill="#3D5FA6" letter-spacing="1.5" text-anchor="middle">
+                <text x="280" y="24">12 AM</text>
+                <text x="544" y="284">6 AM</text>
+                <text x="280" y="548">12 PM</text>
+                <text x="16" y="284">6 PM</text>
+              </g>
+              <g class="orbit">
+                <g transform="translate(280 12)">
+                  <circle r="17" fill="#FFF" stroke="#E8EDF7" />
+                  <path class="counter-orbit" d="M-5 -3a6 6 0 1 0 9 6 7 7 0 0 1-9-6z" fill="#3D5FA6" transform="translate(1 0)" />
+                </g>
+                <g transform="translate(280 548)">
+                  <circle r="17" fill="#58BD4E" />
+                  <g class="counter-orbit" stroke="#fff" stroke-width="2" stroke-linecap="round">
+                    <circle r="5" fill="#fff" stroke="none" />
+                    <path d="M0 -10v2M0 8v2M-10 0h2M8 0h2M-7 -7l1.4 1.4M5.6 5.6L7 7M-7 7l1.4-1.4M5.6 -5.6L7 -7" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+
+            <div class="absolute inset-[15%] leaf img-frame shadow-floating">
+              <img src="https://placehold.co/900x900/3D5FA6/F7F6F2?text=Infant+%26+toddler+classroom&font=montserrat" alt="Placeholder: bright, modern infant and toddler classroom" width="900" height="900" />
+              <div class="tint"></div>
+              <div class="shade bg-gradient-to-t from-black/45 via-transparent to-transparent"></div>
+            </div>
+
+            <!-- Floating chips -->
+            <div class="float-a absolute -left-2 sm:left-0 bottom-[14%] rounded-2xl bg-bloom-blue text-white shadow-floating px-5 py-4 w-[200px]">
+              <p class="font-display text-sm font-semibold leading-tight text-white/80">NEED <span class="text-bloom-green font-extrabold">CHILD CARE?</span></p>
+              <p class="font-display mt-1 text-xs uppercase tracking-[.12em] text-white/70">Ask us about</p>
+              <p class="font-display text-3xl font-bold tight">Care24/7</p>
+            </div>
+            <div class="float-b absolute right-0 top-[16%] rounded-2xl bg-white shadow-floating px-4 py-3 flex items-center gap-3">
+              <span class="grid place-items-center w-10 h-10 rounded-xl bg-bloom-green-mist text-bloom-green-deep">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.65-9.5 9-9.5 9z"/></svg>
+              </span>
+              <div>
+                <p class="font-display font-bold text-bloom-charcoal leading-tight">Home away from home</p>
+                <p class="text-xs text-bloom-charcoal/60 leading-tight">Infants &middot; Toddlers &middot; Preschool</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="relative mx-auto max-w-7xl px-5 sm:px-8 pb-16">
+        <dl class="grid grid-cols-2 lg:grid-cols-4 rounded-3xl bg-white shadow-elevated divide-y lg:divide-y-0 divide-bloom-gray/40 [&>div:nth-child(odd)]:border-r lg:[&>div]:border-r [&>div]:border-bloom-gray/40 lg:[&>div:last-child]:border-r-0">
+          <div class="p-6 sm:p-8 reveal" style="--d:0s">
+            <dt class="eyebrow text-bloom-charcoal/55">Hours of care</dt>
+            <dd class="font-display font-extrabold tight text-5xl sm:text-6xl text-bloom-blue mt-2">24<span class="text-bloom-green text-3xl sm:text-4xl">/7</span></dd>
+          </div>
+          <div class="p-6 sm:p-8 reveal" style="--d:.08s">
+            <dt class="eyebrow text-bloom-charcoal/55">Infants from</dt>
+            <dd class="font-display font-extrabold tight text-5xl sm:text-6xl text-bloom-blue mt-2"><span data-count="8">8</span><span class="text-bloom-green text-2xl sm:text-3xl ml-1">weeks</span></dd>
+          </div>
+          <div class="p-6 sm:p-8 reveal" style="--d:.16s">
+            <dt class="eyebrow text-bloom-charcoal/55">Outreach programs</dt>
+            <dd class="font-display font-extrabold tight text-5xl sm:text-6xl text-bloom-blue mt-2"><span data-count="15">15</span></dd>
+          </div>
+          <div class="p-6 sm:p-8 reveal" style="--d:.24s">
+            <dt class="eyebrow text-bloom-charcoal/55">New local jobs</dt>
+            <dd class="font-display font-extrabold tight text-5xl sm:text-6xl text-bloom-blue mt-2"><span data-count="20">20</span><span class="text-bloom-green text-3xl sm:text-4xl">+</span></dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ============ WELCOME ============ -->
+    <section id="welcome" class="section bg-white relative">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div class="lg:col-span-5 reveal from-left">
+          <div class="relative">
+            <div class="leaf img-frame aspect-[4/5] shadow-floating">
+              <img src="https://placehold.co/800x1000/58BD4E/1C2D57?text=Teacher+with+toddlers&font=montserrat" alt="Placeholder: a Room2Bloom teacher reading with toddlers" loading="lazy" width="800" height="1000" />
+              <div class="tint"></div>
+              <div class="shade bg-gradient-to-t from-black/60 via-black/0 to-transparent"></div>
+              <p class="absolute bottom-12 left-8 right-[30%] font-hand text-[1.6rem] text-white leading-tight">“We share a small amount of your child’s life, and we are privileged to be given the opportunity.”</p>
+            </div>
+            <div class="absolute -z-10 -top-6 -right-6 w-40 h-40 rounded-full bg-bloom-green-mist"></div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <p class="eyebrow text-bloom-green-deep reveal">A message from our leadership</p>
+          <h2 class="tight font-extrabold text-4xl sm:text-5xl lg:text-6xl text-bloom-charcoal mt-4 reveal" style="--d:.08s">Welcome to the <span class="text-bloom-blue">Room2Bloom</span> family.</h2>
+          <div class="mt-8 space-y-5 text-lg text-bloom-charcoal/75 max-w-2xl reveal" style="--d:.16s">
+            <p class="font-hand text-3xl text-bloom-blue">Dear Parents,</p>
+            <p>It is with great pleasure that we welcome you and your child to Room 2 Bloom Community Development Center. We are honored that you have become a part of our family.</p>
+            <p>Our goal is to impact our students’ lives educationally, emotionally and socially so they have a strong foundation for their educational career. We strive to provide not only a challenging academic program but also a secure, personal environment of care for each individual student.</p>
+            <p>Our team looks forward to working with you. Welcome once again.</p>
+          </div>
+          <p class="mt-8 font-display font-semibold text-bloom-charcoal reveal" style="--d:.24s">— Room 2 Bloom Community Development Center</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CARE 24/7 ============ -->
+    <section id="care" class="section relative grain grain-light mesh-blue text-white overflow-hidden">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="grid lg:grid-cols-12 gap-10 items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow text-bloom-green-light reveal">Daycare program</p>
+            <h2 class="tight font-extrabold text-4xl sm:text-6xl lg:text-7xl mt-4 reveal" style="--d:.08s">Care around the clock.<br /><span class="text-bloom-green">We call it Care24/7.</span></h2>
+          </div>
+          <p class="lg:col-span-5 text-lg text-white/80 reveal" style="--d:.16s">
+            The center operates <strong class="text-white">24 hours a day, 7 days a week</strong>, so every family can find care that fits its schedule, whether that's early mornings, overnight shifts or weekends. Our curriculum follows the National Educational School Readiness goals to set every child on the right track for success.
+          </p>
+        </div>
+
+        <div class="mt-14 grid md:grid-cols-3 gap-5">
+          <article class="card-lift rounded-3xl bg-white text-bloom-charcoal p-8 shadow-floating reveal scale-in" style="--d:0s">
+            <span class="grid place-items-center w-14 h-14 rounded-2xl bg-bloom-blue-mist text-bloom-blue">
+              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M9 7.5h.01M15 7.5h.01M10.5 10c.8.6 2.2.6 3 0"/><path d="M5 21v-1a7 7 0 0 1 14 0v1"/></svg>
+            </span>
+            <p class="eyebrow text-bloom-green-deep mt-6">Ages 8 weeks – 1 year</p>
+            <h3 class="font-display font-bold text-2xl tight mt-2">Infant Nursery</h3>
+            <p class="mt-3 text-bloom-charcoal/70">Our Infant Care program follows <em>learn from the start</em>, a milestone-based curriculum that nurtures your baby's growth from the very first weeks.</p>
+          </article>
+          <article class="card-lift rounded-3xl bg-white text-bloom-charcoal p-8 shadow-floating reveal scale-in" style="--d:.1s">
+            <span class="grid place-items-center w-14 h-14 rounded-2xl bg-bloom-green-mist text-bloom-green-deep">
+              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/><rect x="8" y="3" width="8" height="8" rx="1.5"/></svg>
+            </span>
+            <p class="eyebrow text-bloom-green-deep mt-6">Ages 1 – 5 years</p>
+            <h3 class="font-display font-bold text-2xl tight mt-2">Toddler &amp; Preschool</h3>
+            <p class="mt-3 text-bloom-charcoal/70">Math and literacy learning plus plenty of chances for social development, with teachers who believe in every child.</p>
+          </article>
+          <article class="card-lift rounded-3xl bg-white text-bloom-charcoal p-8 shadow-floating reveal scale-in" style="--d:.2s">
+            <span class="grid place-items-center w-14 h-14 rounded-2xl bg-bloom-blue-mist text-bloom-blue">
+              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11h16a8 8 0 0 1-16 0z"/><path d="M12 3v4M8 5v2M16 5v2"/></svg>
+            </span>
+            <p class="eyebrow text-bloom-green-deep mt-6">Every day</p>
+            <h3 class="font-display font-bold text-2xl tight mt-2">Healthy Meals</h3>
+            <p class="mt-3 text-bloom-charcoal/70">Breakfast, lunch and snacks are provided, so children are fueled to play, explore and learn all day long.</p>
+          </article>
+        </div>
+
+        <blockquote class="mt-20 md:mt-28 max-w-4xl reveal">
+          <p class="font-display font-semibold text-2xl sm:text-3xl lg:text-4xl tight !leading-[1.2] text-white/95">
+            “A child’s world expands every time they step, or crawl, or roll, or hop, into a classroom. They’ll find a place where they can build a skyscraper, cook an imaginary feast, or heal a teddy bear’s runny nose.”
+          </p>
+        </blockquote>
+
+        <div class="mt-10 flex flex-wrap gap-3 reveal" style="--d:.1s">
+          <a href="#contact" data-link="enroll" class="btn btn-green">Enroll in Care24/7 <svg class="arrow w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a href="tel:+13053101419" class="btn btn-outline-light">Call (305) 310-1419</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROGRAMS ============ -->
+    <section id="programs" class="section relative">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="max-w-3xl">
+          <p class="eyebrow text-bloom-blue reveal">Programs include</p>
+          <h2 class="tight font-extrabold text-4xl sm:text-5xl lg:text-6xl text-bloom-charcoal mt-4 reveal" style="--d:.08s">Way more than just daycare.</h2>
+          <p class="mt-6 text-lg text-bloom-charcoal/70 reveal" style="--d:.16s">Our leadership team and staff partner with parents to build the right foundation for future learning, from a baby's first milestones through high school test prep.</p>
+        </div>
+
+        <div class="mt-14 grid md:grid-cols-6 gap-5">
+          <!-- Head Start -->
+          <article class="card-lift md:col-span-4 rounded-3xl bg-white shadow-elevated overflow-hidden grid sm:grid-cols-2 reveal from-left">
+            <div class="img-frame min-h-[240px]">
+              <img src="https://placehold.co/700x600/3D5FA6/F7F6F2?text=Head+Start&font=montserrat" alt="Placeholder: parent and young child at Head Start" loading="lazy" width="700" height="600" />
+              <div class="tint"></div>
+              <div class="shade bg-gradient-to-t from-black/60 to-transparent"></div>
+            </div>
+            <div class="p-8">
+              <p class="eyebrow text-bloom-green-deep">Birth to age 5</p>
+              <h3 class="font-display font-bold text-2xl tight mt-2">Head Start Early Childhood</h3>
+              <p class="mt-3 text-bloom-charcoal/70">Comprehensive child development programs for low-income children from birth to age five.</p>
+            </div>
+          </article>
+
+          <!-- VPK -->
+          <article class="card-lift md:col-span-2 rounded-3xl mesh-green text-bloom-blue-ink p-8 shadow-elevated relative grain grain-light overflow-hidden reveal from-right" style="--d:.08s">
+            <p class="eyebrow text-bloom-blue-ink/70">Ages 4 &amp; 5 &middot; Free</p>
+            <h3 class="font-display font-extrabold text-3xl tight mt-2">Voluntary Pre-K (VPK)</h3>
+            <p class="mt-3 text-bloom-blue-ink/85">A free prekindergarten program that prepares children for kindergarten and builds the foundation for their educational success.</p>
+          </article>
+
+          <!-- After school -->
+          <article class="card-lift md:col-span-2 rounded-3xl bg-white shadow-elevated p-8 reveal" style="--d:0s">
+            <span class="grid place-items-center w-12 h-12 rounded-2xl bg-bloom-blue-mist text-bloom-blue">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-2xl tight mt-6">Before &amp; After School</h3>
+            <p class="mt-3 text-bloom-charcoal/70">For children and youth of all ages: academic support, mentoring, youth development, arts, sports and recreation, with healthy breakfasts and snacks.</p>
+            <p class="mt-5 inline-flex rounded-full bg-bloom-cream px-4 py-1.5 text-sm font-semibold text-bloom-blue-ink">After school: Mon–Fri &middot; 2–7 PM</p>
+          </article>
+
+          <!-- Tutoring -->
+          <article class="card-lift md:col-span-2 rounded-3xl bg-white shadow-elevated p-8 reveal" style="--d:.08s">
+            <span class="grid place-items-center w-12 h-12 rounded-2xl bg-bloom-green-mist text-bloom-green-deep">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-2xl tight mt-6">Tutoring</h3>
+            <p class="mt-3 text-bloom-charcoal/70">Personalized enrichment in reading, math, writing and study skills, plus one-on-one SAT &amp; ACT prep with a focus on Algebra 1 &amp; 2, Geometry and Calculus.</p>
+            <p class="mt-5 inline-flex flex-wrap gap-x-2 rounded-2xl bg-bloom-cream px-4 py-1.5 text-sm font-semibold text-bloom-blue-ink">Mon–Fri 2–7 PM &middot; Sat 9 AM–12 PM</p>
+          </article>
+
+          <!-- STEM -->
+          <article class="card-lift md:col-span-2 rounded-3xl bg-bloom-charcoal text-white shadow-elevated p-8 relative overflow-hidden reveal" style="--d:.16s">
+            <div class="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-bloom-blue/40 blur-2xl"></div>
+            <p class="eyebrow text-bloom-green">Grades 2–10 &middot; Summer</p>
+            <h3 class="font-display font-bold text-2xl tight mt-2">STEM Education</h3>
+            <p class="mt-3 text-white/75">A fun summer program designed specifically around science, technology, engineering and math.</p>
+            <div class="mt-6 flex gap-2 font-display font-extrabold text-xl" aria-hidden="true">
+              <span class="grid place-items-center w-10 h-10 rounded-xl bg-white/10">S</span>
+              <span class="grid place-items-center w-10 h-10 rounded-xl bg-bloom-green text-bloom-blue-ink">T</span>
+              <span class="grid place-items-center w-10 h-10 rounded-xl bg-white/10">E</span>
+              <span class="grid place-items-center w-10 h-10 rounded-xl bg-bloom-blue">M</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VISION ============ -->
+    <section id="vision" class="section bg-white relative overflow-hidden">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div class="lg:col-span-6 order-2 lg:order-1">
+          <p class="eyebrow text-bloom-green-deep reveal">The vision</p>
+          <h2 class="tight font-extrabold text-4xl sm:text-5xl lg:text-6xl text-bloom-charcoal mt-4 reveal" style="--d:.08s">A fresh approach to <span class="text-bloom-blue">early learning.</span></h2>
+          <p class="mt-6 text-lg text-bloom-charcoal/75 reveal" style="--d:.16s">Children are active, participatory learners. Every activity is designed to develop each child intellectually, physically and emotionally. The center will be a home away from home for infants, toddlers, children and pre-adolescents: a safe haven with emotional support that promotes excellence academically and socially.</p>
+          <p class="mt-5 text-lg text-bloom-charcoal/75 reveal" style="--d:.2s">We're revitalizing our facility into a light, airy, modern space with eco-friendly furnishings made from organic cotton, wool, recycled fabrics and reclaimed wood, and with organically defined stations for children to play and learn.</p>
+
+          <div class="mt-10 grid sm:grid-cols-2 gap-4">
+            <div class="rounded-2xl bg-bloom-cream p-6 reveal scale-in" style="--d:.24s">
+              <svg class="w-9 h-9 text-bloom-green-deep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.8V16h5v-.3c0-.7.4-1.4 1-1.8A6 6 0 0 0 12 3z"/></svg>
+              <p class="mt-4 text-bloom-charcoal/60">We think</p>
+              <p class="font-display font-extrabold text-2xl tight text-bloom-charcoal">CREATIVELY</p>
+            </div>
+            <div class="rounded-2xl bg-bloom-cream p-6 reveal scale-in" style="--d:.32s">
+              <svg class="w-9 h-9 text-bloom-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+              <p class="mt-4 text-bloom-charcoal/60">We stand for</p>
+              <p class="font-display font-extrabold text-2xl tight text-bloom-charcoal">INTEGRITY</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 order-1 lg:order-2 relative mb-10 lg:mb-0 reveal from-right">
+          <div class="leaf img-frame aspect-[5/4] shadow-floating">
+            <img src="https://placehold.co/1000x800/2C4885/F7F6F2?text=Modern+learning+space&font=montserrat" alt="Placeholder: modern, light-filled learning space" loading="lazy" width="1000" height="800" />
+            <div class="tint"></div>
+            <div class="shade bg-gradient-to-t from-black/50 to-transparent"></div>
+          </div>
+          <div class="absolute -bottom-8 left-4 sm:-left-6 max-w-[290px] rounded-2xl bg-bloom-green text-bloom-blue-ink p-6 shadow-floating">
+            <p class="font-display font-bold text-xl tight !leading-snug">We not only nurture collaboration, <span class="underline decoration-white decoration-4 underline-offset-4">we model it.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMMUNITY OUTREACH ============ -->
+    <section id="outreach" class="section relative grain mesh-hero overflow-hidden">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8 grid lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow text-bloom-blue reveal">Community outreach</p>
+          <h2 class="tight font-extrabold text-4xl sm:text-5xl lg:text-6xl text-bloom-charcoal mt-4 reveal" style="--d:.08s">Rooted in the community we serve.</h2>
+          <p class="mt-6 text-lg text-bloom-charcoal/75 reveal" style="--d:.16s">Room 2 Bloom is organized to serve and support low-income families by creating a nurturing environment dedicated to preparing local youth for tomorrow. Our outreach connects the center's mission and annual goals to the public.</p>
+          <a href="#involved" class="btn btn-primary mt-8 reveal" style="--d:.24s">Get involved <svg class="arrow w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+
+        <ul class="lg:col-span-7 flex flex-wrap content-start gap-3" aria-label="Community outreach programs">
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.00s">Music Program</li>
+          <li class="reveal rounded-full bg-bloom-blue text-white shadow-elevated px-5 py-3 font-display font-semibold" style="--d:.04s">Baseball</li>
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.08s">Lotus House</li>
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.12s">Karate, Yoga &amp; Fitness</li>
+          <li class="reveal rounded-full bg-bloom-green text-bloom-blue-ink shadow-elevated px-5 py-3 font-display font-semibold" style="--d:.16s">Swimming</li>
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.20s">STEAM &amp; Coding</li>
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.24s">Painting with a Smile</li>
+          <li class="reveal rounded-full bg-bloom-charcoal text-white shadow-elevated px-5 py-3 font-display font-semibold" style="--d:.28s">Sneaker Drive</li>
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.32s">Community Garden</li>
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.36s">Senior Citizen Story Time</li>
+          <li class="reveal rounded-full bg-bloom-blue text-white shadow-elevated px-5 py-3 font-display font-semibold" style="--d:.40s">Men’s Mentorship Program</li>
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.44s">Women Empowerment Program</li>
+          <li class="reveal rounded-full bg-bloom-green text-bloom-blue-ink shadow-elevated px-5 py-3 font-display font-semibold" style="--d:.48s">Holiday Food &amp; Toy Drive</li>
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.52s">Dance and Theater</li>
+          <li class="reveal rounded-full bg-white shadow-elevated px-5 py-3 font-display font-semibold text-bloom-charcoal" style="--d:.56s">Movie Night</li>
+        </ul>
+      </div>
+
+      <!-- Tagline marquee -->
+      <div class="mt-20 border-y border-bloom-gray/50 py-6 overflow-hidden" aria-hidden="true">
+        <div class="marquee-track flex w-max gap-10 font-display font-extrabold tight text-5xl sm:text-7xl whitespace-nowrap">
+          <span class="text-bloom-blue">Empowering Families</span><span class="text-bloom-green">✿</span><span class="text-bloom-charcoal/20">Transforming Communities</span><span class="text-bloom-green">✿</span>
+          <span class="text-bloom-blue">Empowering Families</span><span class="text-bloom-green">✿</span><span class="text-bloom-charcoal/20">Transforming Communities</span><span class="text-bloom-green">✿</span>
+          <span class="text-bloom-blue">Empowering Families</span><span class="text-bloom-green">✿</span><span class="text-bloom-charcoal/20">Transforming Communities</span><span class="text-bloom-green">✿</span>
+          <span class="text-bloom-blue">Empowering Families</span><span class="text-bloom-green">✿</span><span class="text-bloom-charcoal/20">Transforming Communities</span><span class="text-bloom-green">✿</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ QUOTES ============ -->
+    <section class="section bg-bloom-charcoal text-white relative overflow-hidden" aria-label="Words that inspire us">
+      <div class="absolute -left-24 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-bloom-blue/30 blur-3xl"></div>
+      <div class="absolute -right-24 bottom-0 w-80 h-80 rounded-full bg-bloom-green/20 blur-3xl"></div>
+      <div class="relative mx-auto max-w-5xl px-5 sm:px-8 text-center">
+        <svg class="mx-auto w-12 h-12 text-bloom-green" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 7H6a3 3 0 0 0-3 3v4h4v4l3-4zm11 0h-4a3 3 0 0 0-3 3v4h4v4l3-4z"/></svg>
+        <div id="quotes" class="relative mt-8 grid" aria-live="polite">
+          <figure class="quote [grid-area:1/1]" aria-hidden="false">
+            <blockquote class="font-display font-bold tight !leading-[1.15] text-3xl sm:text-5xl">“The whole world opened to me when I learned to read.”</blockquote>
+            <figcaption class="mt-6 eyebrow text-white/60">Mary McLeod Bethune</figcaption>
+          </figure>
+          <figure class="quote [grid-area:1/1]" aria-hidden="true">
+            <blockquote class="font-display font-bold tight !leading-[1.15] text-3xl sm:text-5xl">“Education breeds confidence. Confidence breeds hope. Hope breeds peace.”</blockquote>
+            <figcaption class="mt-6 eyebrow text-white/60">Confucius</figcaption>
+          </figure>
+          <figure class="quote [grid-area:1/1]" aria-hidden="true">
+            <blockquote class="font-display font-bold tight !leading-[1.15] text-3xl sm:text-5xl">“Intelligence plus character: that is the goal of true education.”</blockquote>
+            <figcaption class="mt-6 eyebrow text-white/60">Martin Luther King, Jr.</figcaption>
+          </figure>
+          <figure class="quote [grid-area:1/1]" aria-hidden="true">
+            <blockquote class="font-display font-bold tight !leading-[1.15] text-3xl sm:text-5xl">“Every great dream begins with a dreamer.”</blockquote>
+            <figcaption class="mt-6 eyebrow text-white/60">Harriet Tubman</figcaption>
+          </figure>
+        </div>
+        <div class="mt-10 flex justify-center gap-2" role="tablist" aria-label="Choose quote">
+          <button class="quote-dot icon-btn w-3 h-3 rounded-full bg-white" role="tab" aria-selected="true" aria-label="Quote 1"></button>
+          <button class="quote-dot icon-btn w-3 h-3 rounded-full bg-white/30" role="tab" aria-selected="false" aria-label="Quote 2"></button>
+          <button class="quote-dot icon-btn w-3 h-3 rounded-full bg-white/30" role="tab" aria-selected="false" aria-label="Quote 3"></button>
+          <button class="quote-dot icon-btn w-3 h-3 rounded-full bg-white/30" role="tab" aria-selected="false" aria-label="Quote 4"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CAREERS ============ -->
+    <section id="careers" class="section bg-white">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="grid lg:grid-cols-12 gap-10 items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow text-bloom-green-deep reveal">Job creation</p>
+            <h2 class="tight font-extrabold text-5xl sm:text-6xl lg:text-7xl text-bloom-charcoal mt-4 reveal" style="--d:.08s">We’re <span class="font-hand font-semibold text-bloom-blue text-[1.25em] tracking-normal">hiring!</span></h2>
+          </div>
+          <p class="lg:col-span-5 text-lg text-bloom-charcoal/75 reveal" style="--d:.16s">Job creation is fundamental to our mission. Room 2 Bloom will bring <strong class="text-bloom-charcoal">over twenty new jobs</strong> into the community, with rewarding opportunities from the classroom to school management.</p>
+        </div>
+
+        <div class="mt-14 grid md:grid-cols-3 gap-5">
+          <div class="rounded-3xl bg-bloom-cream p-8 reveal" style="--d:0s">
+            <h3 class="font-display font-bold text-xl text-bloom-charcoal">School staff roles</h3>
+            <ul class="mt-5 grid grid-cols-2 gap-y-2 gap-x-4 text-bloom-charcoal/75">
+              <li>Teachers</li><li>Teacher Aides</li><li>Lead Teachers</li><li>Counselors</li><li>Food Specialists</li><li>Drivers</li><li>Janitors</li><li>Volunteers</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl bg-bloom-cream p-8 reveal" style="--d:.08s">
+            <h3 class="font-display font-bold text-xl text-bloom-charcoal">Leadership &amp; operations</h3>
+            <ul class="mt-5 grid gap-y-2 text-bloom-charcoal/75">
+              <li>School Directors</li><li>Assistant Directors</li><li>Team Leads</li><li>Marketing Managers</li><li>Community Organizers</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl bg-bloom-blue text-white p-8 shadow-floating relative overflow-hidden grain grain-light reveal" style="--d:.16s">
+            <h3 class="font-display font-bold text-xl">Benefits we offer</h3>
+            <ul class="mt-5 grid gap-y-2 text-white/85">
+              <li>Child care discount</li>
+              <li>Education assistance</li>
+              <li>Internal CDA preparation</li>
+              <li>Insurance options</li>
+              <li>Employee discounts on major brands</li>
+              <li>401(k)</li>
+              <li class="font-hand text-2xl text-bloom-green">Hugs, smiles, laughter &amp; love!</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 reveal">
+          <a href="tel:+13053101419" class="btn btn-primary">Call about openings <svg class="arrow w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <p class="text-bloom-charcoal/65">Warm, caring, dedicated educators are why we're the next best place to home.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GET INVOLVED ============ -->
+    <section id="involved" class="section relative">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8 grid md:grid-cols-2 gap-5">
+        <article class="card-lift relative rounded-[2rem] mesh-blue grain grain-light text-white p-10 sm:p-12 shadow-floating overflow-hidden reveal from-left">
+          <p class="eyebrow text-bloom-green-light">Donate</p>
+          <h2 class="tight font-extrabold text-4xl sm:text-5xl mt-4">Help a family bloom.</h2>
+          <p class="mt-5 text-lg text-white/80 max-w-md">Your gift supports nurturing care, education and outreach for low-income families and local youth.</p>
+          <a href="#contact" data-link="donate" class="btn btn-white mt-8">Donate Today <svg class="arrow w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+        <article class="card-lift relative rounded-[2rem] mesh-green grain grain-light text-bloom-blue-ink p-10 sm:p-12 shadow-floating overflow-hidden reveal from-right" style="--d:.08s">
+          <p class="eyebrow text-bloom-blue-ink/70">Volunteer</p>
+          <h2 class="tight font-extrabold text-4xl sm:text-5xl mt-4">Share your time &amp; talent.</h2>
+          <p class="mt-5 text-lg text-bloom-blue-ink/85 max-w-md">From story time and mentorship to food and toy drives, there's room for everyone to make a difference.</p>
+          <a href="tel:+13053101419" class="btn btn-primary mt-8">Call to Volunteer <svg class="arrow w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="section bg-white">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8 grid lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-5">
+          <p class="eyebrow text-bloom-green-deep reveal">Visit &amp; enroll</p>
+          <h2 class="tight font-extrabold text-4xl sm:text-5xl lg:text-6xl text-bloom-charcoal mt-4 reveal" style="--d:.08s">Make room for your child to <span class="text-bloom-green-deep">bloom.</span></h2>
+          <p class="mt-6 text-lg text-bloom-charcoal/75 reveal" style="--d:.16s">Questions about Care24/7, enrollment or our programs? Give us a call. We'd love to welcome your family.</p>
+          <div class="mt-8 flex flex-wrap gap-3 reveal" style="--d:.24s">
+            <a href="#contact" data-link="enroll" class="btn btn-primary">Start Enrollment <svg class="arrow w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a href="tel:+13053101419" class="btn btn-ghost">Call (305) 310-1419</a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 grid sm:grid-cols-2 gap-5">
+          <div class="rounded-3xl bg-bloom-cream p-8 reveal scale-in">
+            <span class="grid place-items-center w-12 h-12 rounded-2xl bg-white text-bloom-blue shadow-elevated">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-xl mt-5">Address</h3>
+            <address class="not-italic mt-2 text-bloom-charcoal/75">4544 South Court Street<br />Montgomery, AL 36105</address>
+            <a class="link mt-3 inline-block font-semibold text-bloom-blue" href="https://www.google.com/maps/search/?api=1&query=4544+South+Court+Street+Montgomery+AL+36105" target="_blank" rel="noopener">Get directions</a>
+          </div>
+          <div class="rounded-3xl bg-bloom-cream p-8 reveal scale-in" style="--d:.08s">
+            <span class="grid place-items-center w-12 h-12 rounded-2xl bg-white text-bloom-green-deep shadow-elevated">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-xl mt-5">Hours</h3>
+            <p class="mt-2 text-bloom-charcoal/75"><strong class="text-bloom-charcoal">Care24/7:</strong> open 24 hours, 7 days a week</p>
+            <p class="mt-1 text-bloom-charcoal/75"><strong class="text-bloom-charcoal">After school:</strong> Mon–Fri, 2–7 PM</p>
+          </div>
+          <div class="sm:col-span-2 rounded-3xl bg-bloom-blue-mist p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 reveal scale-in" style="--d:.16s">
+            <div>
+              <h3 class="font-display font-bold text-xl">Contact</h3>
+              <p class="mt-1 text-bloom-charcoal/75">Emounte Banks &middot; Bertram Duggan</p>
+            </div>
+            <a href="tel:+13053101419" class="btn btn-primary">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              (305) 310-1419
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-bloom-cream border-t border-bloom-gray/50">
+    <div class="mx-auto max-w-7xl px-5 sm:px-8 py-14 grid md:grid-cols-12 gap-10 items-start">
+      <div class="md:col-span-5">
+        <img src="assets/room2bloom-logo.png" alt="Room2Bloom Community Development Center — Empowering Families, Transforming Communities" class="w-64 h-auto" loading="lazy" width="1071" height="446" />
+        <p class="mt-6 text-bloom-charcoal/65 max-w-sm">Lead with dignity. Communicate with clarity. Make room for growth.</p>
+      </div>
+      <nav class="md:col-span-3" aria-label="Footer">
+        <p class="eyebrow text-bloom-charcoal/50">Explore</p>
+        <ul class="mt-4 grid gap-2 font-semibold text-bloom-charcoal/80">
+          <li><a class="nav-link" href="#care">Care24/7</a></li>
+          <li><a class="nav-link" href="#programs">Programs</a></li>
+          <li><a class="nav-link" href="#outreach">Community Outreach</a></li>
+          <li><a class="nav-link" href="#careers">Careers</a></li>
+          <li><a class="nav-link" href="#involved">Donate &amp; Volunteer</a></li>
+        </ul>
+      </nav>
+      <div class="md:col-span-4">
+        <p class="eyebrow text-bloom-charcoal/50">Visit</p>
+        <address class="not-italic mt-4 text-bloom-charcoal/80">4544 South Court Street<br />Montgomery, AL 36105</address>
+        <a class="link mt-3 inline-block font-semibold text-bloom-blue" href="tel:+13053101419">(305) 310-1419</a>
+      </div>
+    </div>
+    <div class="border-t border-bloom-gray/50">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8 py-6 flex flex-col sm:flex-row justify-between gap-2 text-sm text-bloom-charcoal/55">
+        <p>&copy; <span id="year"></span> Room2Bloom Community Development Center. All rights reserved.</p>
+        <p>Empowering Families &middot; Transforming Communities</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // External links — paste URLs here when ready. Empty = buttons scroll to #contact.
+    const LINKS = {
+      enroll: '',
+      donate: '',
+    };
+    document.querySelectorAll('[data-link]').forEach((el) => {
+      const url = LINKS[el.dataset.link];
+      if (url) { el.href = url; el.target = '_blank'; el.rel = 'noopener'; }
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 24-hour dial ticks
+    const ticks = document.getElementById('ticks');
+    for (let i = 0; i < 96; i++) {
+      const hour = i % 4 === 0;
+      const major = i % 24 === 0;
+      const a = (i / 96) * Math.PI * 2;
+      const r1 = 252, r2 = major ? 236 : hour ? 240 : 246;
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', 280 + Math.sin(a) * r1);
+      line.setAttribute('y1', 280 - Math.cos(a) * r1);
+      line.setAttribute('x2', 280 + Math.sin(a) * r2);
+      line.setAttribute('y2', 280 - Math.cos(a) * r2);
+      line.setAttribute('stroke', hour ? '#3D5FA6' : '#C6C5C0');
+      line.setAttribute('stroke-width', major ? 3 : hour ? 2 : 1.2);
+      line.setAttribute('stroke-linecap', 'round');
+      if (major) line.setAttribute('opacity', '0');
+      ticks.appendChild(line);
+    }
+
+    // Header border on scroll
+    const header = document.getElementById('siteHeader');
+    const onScroll = () => header.classList.toggle('border-bloom-gray/50', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('mobileMenu');
+    const setMenu = (open) => { menu.dataset.open = open; menuBtn.setAttribute('aria-expanded', open); menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+    menuBtn.addEventListener('click', () => setMenu(menu.dataset.open !== 'true'));
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+    // Reveal on scroll + count-up
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const countUp = (el) => {
+      const end = +el.dataset.count; const t0 = performance.now(); const dur = 1400;
+      const step = (t) => { const p = Math.min((t - t0) / dur, 1); el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in');
+        if (!reduced) e.target.querySelectorAll('[data-count]').forEach(countUp);
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // Rotating quotes
+    const quotes = [...document.querySelectorAll('.quote')];
+    const dots = [...document.querySelectorAll('.quote-dot')];
+    let q = 0, timer;
+    const show = (i) => {
+      q = i;
+      quotes.forEach((el, n) => el.setAttribute('aria-hidden', n !== i));
+      dots.forEach((d, n) => { d.setAttribute('aria-selected', n === i); d.classList.toggle('bg-white', n === i); d.classList.toggle('bg-white/30', n !== i); });
+    };
+    const start = () => { if (!reduced) timer = setInterval(() => show((q + 1) % quotes.length), 6500); };
+    dots.forEach((d, n) => d.addEventListener('click', () => { clearInterval(timer); show(n); start(); }));
+    start();
+  </script>
+</body>
+</html>
