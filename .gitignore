@@ -1,0 +1,13 @@
+# dependencies
+node_modules/
+
+# local tooling output
+temporary screenshots/
+*.log
+
+# vercel
+.vercel/
+
+# os
+.DS_Store
+Thumbs.db
