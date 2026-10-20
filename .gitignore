@@ -11,3 +11,6 @@ temporary screenshots/
 # os
 .DS_Store
 Thumbs.db
+
+# brand source files (brochure contains photos of children; keep out of repo)
+brand_assets/
