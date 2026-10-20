@@ -1,4 +1,5 @@
-// Generate site photos with Magica (Nano Banana Pro edit) from the reference shots in images/.
+// Generate site photos with Magica (Nano Banana Pro). Slots with `refs` edit the reference shots in images/;
+// slots without refs are generated text-only.
 // Usage: node scripts/magica-generate.mjs            -> all slots
 //        node scripts/magica-generate.mjs hero vision -> only those slots
 // Requires MAGICA_API_KEY in .env (project root) or the environment. Output: assets/photos/<slot>.jpg
@@ -19,26 +20,32 @@ try {
 
 const API = 'https://inference.magica.com/v1';
 const NODE = 'nano_banana_pro';
-const SUB_MODEL = 'nano-banana-pro-edit';
+const EDIT_MODEL = 'nano-banana-pro-edit';
+const TEXT_MODEL = 'nano-banana-pro-text';
 const KEY = process.env.MAGICA_API_KEY;
 
 const STYLE =
-  'Photorealistic editorial photograph, soft natural window light, warm and joyful mood, ' +
+  'Candid documentary photograph, shot on a full-frame camera with a 35mm lens at eye level with the children, ' +
+  'soft natural window light from one side with matching, consistent shadows, warm and joyful mood, ' +
   'bright modern early-learning center with natural wood, plants and calm warm-cream walls, ' +
   'subtle accents in soft periwinkle blue and fresh leaf green. Plain walls with no signs, posters, letters or numbers. ' +
-  "Keep every child's face, skin tone, hair and clothing exactly as in the reference photos. " +
-  'Natural, believable proportions and hands. No text, no logos, no watermarks.';
+  'Natural skin texture, true-to-life child proportions and head-to-body ratios for each age, ' +
+  'every person at a believable scale for their distance from the camera, natural hands with five fingers. ' +
+  'One real photograph, not a composite. No text, no logos, no watermarks.';
 
 const SLOTS = [
   {
     name: 'hero',
     ratio: '1:1',
-    refs: ['Baby1.png', 'baby3.png', 'Child1.png'],
+    resolution: '2K',
     prompt:
-      'Place these three children together on a soft, rounded play mat in a sunny infant and toddler classroom. ' +
-      'The two babies sit and smile while the little girl plays with her colorful building toys beside them. ' +
-      'Low wooden shelves with baskets of toys behind them, shallow depth of field. Dress the first baby in a simple soft cream onesie. ' +
-      'Square composition, children centered.',
+      'Three infants, all about 9 to 11 months old and all the same size, sit together on one round, cream play mat in a sunny infant classroom, ' +
+      'side by side at the same distance from the camera. No toddlers or older children in the scene. ' +
+      'On the left, a Black baby boy with short dark hair in a soft cream cotton onesie sits upright and laughs. ' +
+      'In the middle, a Latina baby girl with wispy dark hair in a light blue romper reaches for a wooden ring stacker. ' +
+      'On the right, an East Asian baby boy with straight black hair in a pale green onesie holds a soft fabric block and smiles. ' +
+      'Low wooden shelves with woven baskets of soft toys behind them, a potted plant, shallow depth of field. ' +
+      'Square composition, babies centered, camera low at their eye level.',
   },
   {
     name: 'welcome',
@@ -47,28 +54,34 @@ const SLOTS = [
     prompt:
       'A caring adult teacher, seen from behind or in soft focus, reads a large picture book aloud to these three children ' +
       'in a cozy reading nook with floor cushions and a low bookshelf. The children sit close together, engaged and smiling, ' +
-      'the girl and boy holding their own books. Vertical portrait composition, children are the focus.',
+      'the girl and boy holding their own books. Vertical portrait composition, children are the focus. ' +
+      "Keep every child's face, skin tone, hair and clothing exactly as in the reference photos.",
   },
   {
     name: 'headstart',
     ratio: '4:3',
-    refs: ['baby2.png', 'groupkids2.png'],
+    resolution: '2K',
     prompt:
-      'A warm morning drop-off moment: a parent (face turned away, only shoulders and arms visible) gently hands the smiling baby to the classroom ' +
-      'while the three children play happily with colorful blocks at a low table in the background. ' +
-      'Family-centered, welcoming, landscape composition.',
+      "A warm morning drop-off in an infant room, photographed over a parent's shoulder. In the soft-focus near foreground on the left, " +
+      "the back of a Black father's shoulder in a light-blue shirt; his arms extend forward, handing an 8-month-old smiling Black baby girl " +
+      'in a yellow floral outfit with a small yellow headband to a smiling South Asian female caregiver in a sage-green top who reaches out to take her. ' +
+      "The baby is realistically sized: her whole body is about as long as the adult's forearm, held securely under her arms. " +
+      'In the softly blurred background, a second caregiver, a white woman with red hair, sits on a soft floor mat with three infants of the same age, ' +
+      'about 6 to 10 months old: a Latino baby, an East Asian baby and a white baby, playing with soft toys and an activity gym. ' +
+      'Infants only, no toddlers or older children. Believable size for their distance. Family-centered, welcoming, landscape composition.',
   },
   {
     name: 'vision',
     ratio: '5:4',
-    refs: ['kidblocks.png', 'kidsgroup.png'],
+    resolution: '2K',
     prompt:
-      'A modern, light-filled preschool classroom with large windows, furnished with low wooden tables, open toy shelves, a soft rug and plants. ' +
-      'These children play together naturally and interact with each other: the girl stacks blocks at a low wooden table while two others watch and help, ' +
-      'the rest sit and crawl on the rug nearby, the baby exploring the floor. Everyone is lit by the same soft daylight with consistent shadows, ' +
-      'naturally integrated into the scene as one real photograph, not a collage. ' +
-      'The warm wooden floor and rug fill the entire bottom of the frame edge to edge; no black, empty or transparent areas anywhere. ' +
-      'Wide landscape composition, children mid-ground.',
+      'A wide shot of a modern, light-filled preschool classroom with tall windows on the left, low wooden tables, open toy shelves, ' +
+      'a soft cream rug over a warm wooden floor, and plants. Six diverse preschoolers, all 3 to 4 years old and similar in size, play together naturally: ' +
+      'at a low wooden table, a Black girl stacks colorful wooden blocks while a white boy and a Latina girl help and watch; ' +
+      'on the rug nearby, an East Asian girl and a South Asian boy roll a toy truck between them, and a mixed-race boy sorts shape blocks. ' +
+      'No babies or infants in the scene. Everyone rests on the same floor plane, with perspective-correct sizes that get smaller with distance, ' +
+      'all lit by the same soft daylight. Camera at adult chest height, slightly angled down. ' +
+      'Wide landscape composition, children mid-ground, the floor and rug filling the bottom of the frame.',
   },
 ];
 
@@ -122,12 +135,12 @@ async function upload(browser, file) {
 
 async function generate(slot, urls) {
   const { runId } = await api('POST', `/nodes/${NODE}/run`, {
-    subModelId: SUB_MODEL,
+    subModelId: urls.length ? EDIT_MODEL : TEXT_MODEL,
     input: {
       prompt: `${slot.prompt} ${STYLE}`,
-      image_urls: urls,
+      ...(urls.length && { image_urls: urls }),
       aspect_ratio: slot.ratio,
-      resolution: '1K',
+      resolution: slot.resolution || '1K',
       output_format: 'JPEG',
     },
   });
@@ -152,21 +165,24 @@ const wanted = process.argv.slice(2);
 const slots = wanted.length ? SLOTS.filter((s) => wanted.includes(s.name)) : SLOTS;
 await mkdir(OUT, { recursive: true });
 
-const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new' });
+const refs = new Set(slots.flatMap((s) => s.refs || []));
 const uploaded = new Map();
-try {
-  for (const file of new Set(slots.flatMap((s) => s.refs))) {
-    uploaded.set(file, await upload(browser, file));
-    console.log(`uploaded ${file}`);
+if (refs.size) {
+  const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new' });
+  try {
+    for (const file of refs) {
+      uploaded.set(file, await upload(browser, file));
+      console.log(`uploaded ${file}`);
+    }
+  } finally {
+    await browser.close();
   }
-} finally {
-  await browser.close();
 }
 
 await Promise.all(
   slots.map(async (slot) => {
     try {
-      const url = await generate(slot, slot.refs.map((f) => uploaded.get(f)));
+      const url = await generate(slot, (slot.refs || []).map((f) => uploaded.get(f)));
       const buf = Buffer.from(await (await fetch(url)).arrayBuffer());
       await writeFile(path.join(OUT, `${slot.name}.jpg`), buf);
       console.log(`saved assets/photos/${slot.name}.jpg`);
