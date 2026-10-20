@@ -208,42 +208,6 @@
     .scribble path { stroke-dasharray: 400; stroke-dashoffset: 400; animation: draw 1.4s var(--ease-out) .9s forwards; }
     @keyframes draw { to { stroke-dashoffset: 0; } }
 
-    /* Hero video background + blooms */
-    #top { isolation: isolate; }
-    .grain > .hero-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-    .hero-bg video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .hero-bg .hero-tint { position: absolute; inset: 0; background: #3D5FA6; mix-blend-mode: multiply; opacity: .18; }
-    .hero-bg .hero-wash {
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(90deg, rgba(247,246,242,.92) 0%, rgba(247,246,242,.78) 38%, rgba(232,237,247,.32) 60%, rgba(232,237,247,0) 82%),
-        radial-gradient(60% 55% at 88% 18%, rgba(88,189,78,.14), transparent 70%),
-        linear-gradient(0deg, rgba(247,246,242,.85) 0%, transparent 30%);
-    }
-    @media (max-width: 1023px) {
-      .hero-bg .hero-wash {
-        background:
-          linear-gradient(180deg, rgba(247,246,242,.92) 0%, rgba(247,246,242,.86) 52%, rgba(232,237,247,.3) 66%, rgba(232,237,247,0) 78%),
-          linear-gradient(0deg, rgba(247,246,242,.85) 0%, transparent 18%);
-      }
-      .bloom.bloom-corner { --size: 120px !important; right: -52px !important; top: -48px !important; }
-    }
-    .bloom {
-      position: absolute; width: var(--size, 96px); height: var(--size, 96px);
-      filter: drop-shadow(0 8px 16px rgba(28,45,87,.22));
-    }
-    .bloom-inner {
-      width: 100%; height: 100%; opacity: 0; transform: scale(0) rotate(-40deg);
-      animation: bloomIn 1.4s var(--spring) forwards; animation-delay: var(--d, .3s);
-    }
-    .bloom-inner > svg {
-      width: 100%; height: 100%; display: block; transform-origin: 50% 50%;
-      animation: sway var(--sway, 9s) ease-in-out var(--sd, 0s) infinite alternate;
-    }
-    .bloom.spin .bloom-inner > svg { animation: orbit 60s linear infinite; }
-    @keyframes bloomIn { to { opacity: 1; transform: none; } }
-    @keyframes sway { from { transform: rotate(-7deg) scale(.97); } to { transform: rotate(7deg) scale(1.03); } }
-
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
       .reveal, .load { opacity: 1; transform: none; }
@@ -299,51 +263,6 @@
   <main id="main">
     <!-- ============ HERO ============ -->
     <section id="top" class="relative grain mesh-hero overflow-hidden">
-      <div class="hero-bg" aria-hidden="true">
-        <video id="heroVideo" muted loop playsinline preload="auto" poster="https://image.mux.com/01yW6GoUz01OTXk5w1Rt1MHkJWlCGIwj46SUONJZ4DJUE/thumbnail.webp?time=0" data-src="https://stream.mux.com/01yW6GoUz01OTXk5w1Rt1MHkJWlCGIwj46SUONJZ4DJUE.m3u8"></video>
-        <div class="hero-tint"></div>
-        <div class="hero-wash"></div>
-
-        <svg width="0" height="0" class="absolute">
-          <defs>
-            <symbol id="bloomShape" viewBox="-50 -50 100 100">
-              <g style="fill: var(--petal)">
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(60)" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(120)" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(180)" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(240)" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(300)" />
-              </g>
-              <g style="fill: var(--petal2)" transform="rotate(30) scale(.62)">
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(60)" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(120)" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(180)" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(240)" />
-                <path d="M0-4C12-14 14-36 0-47-14-36-12-14 0-4Z" transform="rotate(300)" />
-              </g>
-              <g style="stroke: var(--petal2)" stroke-width="1.6" stroke-linecap="round" opacity=".55">
-                <path d="M0-6V-30M0 6V30M-5-3-26-15M5 3 26 15M-5 3-26 15M5-3 26-15" />
-              </g>
-              <circle r="9" style="fill: var(--center)" />
-              <g fill="#FFF" opacity=".85">
-                <circle cx="-3" cy="-3" r="1.6" /><circle cx="3.5" cy="-1.5" r="1.3" /><circle cx="0" cy="3.5" r="1.4" />
-              </g>
-            </symbol>
-          </defs>
-        </svg>
-
-        <div class="bloom bloom-corner spin" style="--size:190px; right:-48px; top:-40px; --petal:#3D5FA6; --petal2:#6F8BC6; --center:#58BD4E"><div class="bloom-inner" style="--d:.35s"><svg><use href="#bloomShape"/></svg></div></div>
-        <div class="bloom hidden lg:block" style="--size:84px; right:13%; top:5%; --petal:#E8EDF7; --petal2:#9FB2DC; --center:#3D5FA6; --sway:7s; --sd:-2s"><div class="bloom-inner" style="--d:.6s"><svg><use href="#bloomShape"/></svg></div></div>
-        <div class="bloom hidden sm:block" style="--size:64px; right:3%; top:46%; --petal:#2C4885; --petal2:#5C7BC0; --center:#A6E39E; --sway:8s; --sd:-5s"><div class="bloom-inner" style="--d:.75s"><svg><use href="#bloomShape"/></svg></div></div>
-        <div class="bloom" style="--size:140px; right:-36px; bottom:14%; --petal:#1C2D57; --petal2:#3D5FA6; --center:#58BD4E; --sway:10s; --sd:-3s"><div class="bloom-inner" style="--d:.5s"><svg><use href="#bloomShape"/></svg></div></div>
-        <div class="bloom spin" style="--size:180px; left:-56px; bottom:-48px; --petal:#2C4885; --petal2:#7C96CF; --center:#A6E39E"><div class="bloom-inner" style="--d:.45s"><svg><use href="#bloomShape"/></svg></div></div>
-        <div class="bloom hidden md:block" style="--size:72px; left:9%; bottom:6%; --petal:#9FB2DC; --petal2:#E8EDF7; --center:#2C4885; --sway:7.5s; --sd:-1s"><div class="bloom-inner" style="--d:.85s"><svg><use href="#bloomShape"/></svg></div></div>
-        <div class="bloom hidden lg:block" style="--size:96px; left:47%; bottom:-28px; --petal:#3D5FA6; --petal2:#E8EDF7; --center:#58BD4E; --sway:9s; --sd:-4s"><div class="bloom-inner" style="--d:.95s"><svg><use href="#bloomShape"/></svg></div></div>
-        <div class="bloom hidden 2xl:block" style="--size:58px; left:2.5%; top:7%; --petal:#5C7BC0; --petal2:#E8EDF7; --center:#58BD4E; --sway:8.5s; --sd:-6s"><div class="bloom-inner" style="--d:1.05s"><svg><use href="#bloomShape"/></svg></div></div>
-        <div class="bloom hidden lg:block" style="--size:46px; left:49%; top:9%; --petal:#E8EDF7; --petal2:#3D5FA6; --center:#A6E39E; --sway:6.5s; --sd:-2.5s"><div class="bloom-inner" style="--d:1.15s"><svg><use href="#bloomShape"/></svg></div></div>
-      </div>
       <div class="mx-auto max-w-7xl px-5 sm:px-8 pt-10 pb-20 sm:pt-16 lg:pt-20 lg:pb-28 grid lg:grid-cols-12 gap-14 lg:gap-8 items-center">
         <div class="lg:col-span-6">
           <p class="load inline-flex items-center gap-3 rounded-full bg-white/90 shadow-elevated pl-3 pr-4 py-2 text-sm font-semibold text-bloom-blue-ink" style="--d:.05s">
@@ -387,9 +306,9 @@
         <div class="lg:col-span-6 relative load" style="--d:.25s">
           <div class="relative mx-auto w-full max-w-[560px] aspect-square">
             <svg id="dial" class="absolute inset-0 w-full h-full" viewBox="0 0 560 560" aria-hidden="true">
-              <circle cx="280" cy="280" r="268" fill="none" stroke="#C9D5EE" stroke-width="1.5" stroke-dasharray="2 8" />
+              <circle cx="280" cy="280" r="268" fill="none" stroke="#C6C5C0" stroke-width="1.5" stroke-dasharray="2 8" />
               <g id="ticks"></g>
-              <g font-family="Outfit, Arial" font-weight="700" font-size="13" fill="#C9D5EE" letter-spacing="1.5" text-anchor="middle">
+              <g font-family="Outfit, Arial" font-weight="700" font-size="13" fill="#3D5FA6" letter-spacing="1.5" text-anchor="middle">
                 <text x="280" y="24">12 AM</text>
                 <text x="544" y="284">6 AM</text>
                 <text x="280" y="548">12 PM</text>
@@ -828,7 +747,7 @@
           <div class="sm:col-span-2 rounded-3xl bg-bloom-blue-mist p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 reveal scale-in" style="--d:.16s">
             <div>
               <h3 class="font-display font-bold text-xl">Contact</h3>
-              <p class="mt-1 text-bloom-charcoal/75">Dean of Admissions</p>
+              <p class="mt-1 text-bloom-charcoal/75">Emounte Banks &middot; Bertram Duggan</p>
             </div>
             <a href="tel:+13345550100" class="btn btn-primary">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -871,26 +790,6 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
-  <script>
-    // Hero background video (Mux HLS). Reduced-motion users keep the poster frame.
-    (() => {
-      const video = document.getElementById('heroVideo');
-      if (!video || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const src = video.dataset.src;
-      const play = () => video.play().catch(() => {});
-      if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = src;
-        video.addEventListener('loadedmetadata', play, { once: true });
-      } else if (window.Hls && Hls.isSupported()) {
-        const hls = new Hls({ capLevelToPlayerSize: true });
-        hls.loadSource(src);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, play);
-      }
-    })();
-  </script>
-
   <script>
     // External links — paste URLs here when ready. Empty = buttons scroll to #contact.
     const LINKS = {
@@ -916,7 +815,7 @@
       line.setAttribute('y1', 280 - Math.cos(a) * r1);
       line.setAttribute('x2', 280 + Math.sin(a) * r2);
       line.setAttribute('y2', 280 - Math.cos(a) * r2);
-      line.setAttribute('stroke', hour ? '#9FB2DC' : '#C9D5EE');
+      line.setAttribute('stroke', hour ? '#3D5FA6' : '#C6C5C0');
       line.setAttribute('stroke-width', major ? 3 : hour ? 2 : 1.2);
       line.setAttribute('stroke-linecap', 'round');
       if (major) line.setAttribute('opacity', '0');
